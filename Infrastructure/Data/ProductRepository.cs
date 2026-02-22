@@ -33,7 +33,7 @@ namespace Infrastructure.Data
             return await context.Products.FindAsync(id);
         }
 
-        public async Task<IReadOnlyList<Product>> GetProductsAsync(string? brand, string? type)
+        public async Task<IReadOnlyList<Product>> GetProductsAsync(string? brand, string? type,string? sort)
         {
             // add filtering logic 
             var query = context.Products.AsQueryable();
@@ -45,6 +45,12 @@ namespace Infrastructure.Data
             if (!string.IsNullOrWhiteSpace(type))
                 query = query.Where(product => product.Type == type);
 
+            query = sort switch
+            {
+                "priceAsc" => query.OrderBy(product => product.Price),
+                "priceDesc" => query.OrderByDescending(product => product.Price),
+                _ => query.OrderBy(product => product.Name)
+            };
 
             return await query.ToListAsync();
         }
