@@ -12,11 +12,25 @@ namespace API.Controllers
     {
        
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(string? brand, string? type)
         {
 
-            return Ok(await productRepository.GetProductsAsync());
+            return Ok(await productRepository.GetProductsAsync(brand,type));
         }
+
+        [HttpGet("brands")]
+        public async Task<ActionResult<IReadOnlyList<string>>> GetProductBrands()
+        {
+
+            return Ok(await productRepository.GetProductBrands());
+        }
+        [HttpGet("types")]
+        public async Task<ActionResult<IReadOnlyList<string>>> GetProductTypes()
+        {
+
+            return Ok(await productRepository.GetProductTypes());
+        }
+
         [HttpGet("{id:int}")] 
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
