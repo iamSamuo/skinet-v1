@@ -14,9 +14,12 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 
 });
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+// typeof is used to register the generic repository for all entities that inherit from BaseEntity
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 
+// the order of the middleware is important
 
 app.UseHttpsRedirection();
 
